@@ -1,0 +1,102 @@
+/* Fuente Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+/* Colores */
+:root {
+    --texto: #646567;           /* 75% negro */
+    --rojo-pantone: #E03C31;    /* Pantone 1795 C */
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    background: #f4f4f4;
+    padding: 30px;
+    color: var(--texto);
+}
+
+/* FORMULARIO */
+.justificativo {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    grid-template-areas:
+        "alumno academico"
+        "alumno motivo"
+        "certificado certificado"
+        "boton boton";
+    gap: 25px;
+
+    /* Ocupar más pantalla */
+    width: 95%;
+    max-width: 1500px;
+    margin: auto;
+}
+
+/* FIELDSETS */
+fieldset {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+/* Áreas */
+fieldset:nth-of-type(1) { grid-area: alumno; }
+fieldset:nth-of-type(2) { grid-area: academico; }
+fieldset:nth-of-type(3) { grid-area: motivo; }
+fieldset:nth-of-type(4) { grid-area: certificado; }
+
+/* LEGEND */
+legend {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 9pt;
+    color: var(--texto);
+    padding: 0 8px;
+}
+
+/* LABELS */
+label {
+    display: block;
+    margin-top: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+    color: var(--texto);
+}
+
+/* INPUTS */
+input,
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: var(--texto);
+}
+
+/* BOTÓN */
+input[type="submit"] {
+    grid-area: boton;
+    justify-self: center;
+
+    padding: 12px 50px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 7pt;
+
+    background-color: var(--rojo-pantone);
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    opacity: 0.9;
+}

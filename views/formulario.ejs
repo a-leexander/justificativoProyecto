@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/resources/css/estilos.css">
+    <title>Formulario</title>
+</head>
+<body>
+    <form class="justificativo" action="/enviar-justificativo" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <legend>Datos del estudiante</legend>
+
+        <label>Nombre estudiante:</label>
+        <input type="text" name="nom" id="nom" required>
+        <label>Rut:</label>
+        <input type="text" name="rut" id="rut" required>
+        <label>Correo institucional:</label>
+        <input type="email" name="ema" id="ema" required>
+        <label>Telefono:</label>
+        <input type="tel" name="tel" id="tel" required>
+        <label>Carrera:</label>
+        <input type="text" name="car" id="car" required>
+        <label>Semestre:</label>
+        <input type="text" name="sem" id="sem" required>
+        <label>Jornada:</label>
+        <select name="jornada">
+            <option value="">Seleccione</option>
+            <option value="diurna">Diurna</option>
+            <option value="vespertina">Vespertina</option>
+        </select>
+
+    </fieldset>
+    <fieldset>
+        <legend>Datos Académicos</legend>
+
+        <label>Fecha de Evaluación a Justificar:</label>
+        <input type="date" name="fecha_evaluacion" required>
+        <label>Asignatura:</label>
+        <input type="text" name="asignatura" required>
+        <label>Sección:</label>
+        <input type="text" name="seccion" required>
+        <label>Docente:</label>
+        <input type="text" name="docente" required>
+    </fieldset>
+    <fieldset>
+    <legend>Motivo de la Justificación</legend>
+        <label>Motivo:</label>
+            <input type="text" name="motivo" required>
+    </fieldset>
+    <fieldset>
+        <legend>Adjuntar certificado (PDF):</legend>
+            <input type="file" name="certificado" accept="application/pdf" required>
+    </fieldset>
+    <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>
