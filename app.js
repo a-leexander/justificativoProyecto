@@ -24,7 +24,7 @@ app.use("/resources", express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 app.get("/", (req, res)=>{
-    res.render("formulario");
+    res.render("index");
 });
 
 //Creacion del edpoint para recibir solo una url (una imagen)
@@ -36,6 +36,7 @@ app.post("/enviar-justificativo", upload.single("certificado"), (req, res) => {
     // Archivo PDF
     console.log(req.file);
 
+    
     if (!req.file) {
         return res.send("No se subió ningún PDF");
     }
@@ -43,6 +44,6 @@ app.post("/enviar-justificativo", upload.single("certificado"), (req, res) => {
     res.send("Formulario y PDF recibidos correctamente");
 });
 
-app.listen(3200, function(){
+app.listen(3000, function(){
     console.log("Servidor creado http://localhost:3200");
 });
