@@ -10,3 +10,21 @@
 
 //     res.render("formulario");
 // });
+// app.get("/formulario", (req, res) => {
+
+//     const rutAlumno = req.session.user.rut;
+//         if (error) {
+//             return res.send("Error en la base de datos");
+//         }
+//     conexion.query("SELECT * FROM Alumno WHERE rut = ?", [rutAlumno], (error, results) => {
+
+//             if (results.length === 0) {
+//                 return res.send("Alumno no encontrado");
+//             }
+
+//             res.render("formulario", {
+//                 alumno: results[0]
+//             });
+//         }
+//     );
+// });

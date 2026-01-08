@@ -1,26 +1,148 @@
-/* Fuente Montserrat */
+/* =========================
+   FUENTE
+========================= */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
 
-/* Colores */
+/* =========================
+   VARIABLES
+========================= */
 :root {
-    --texto: #646567;           /* 75% negro */
-    --rojo-pantone: #E03C31;    /* Pantone 1795 C */
+    --texto: #646567;
+    --rojo-pantone: #E03C31;
     --fondo: #f4f4f4;
 }
 
-/* Reset */
+/* =========================
+   RESET GENERAL
+========================= */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* Body */
+/* =========================
+   BODY
+========================= */
 body {
-    background: #f4f4f4;
-    padding: 30px;
+    min-height: 100vh;
+    background: var(--fondo);
+    font-family: 'Montserrat', sans-serif;
     color: var(--texto);
 }
 
-/* FORMULARIO */
+/* =========================
+   HEADER LOGIN
+========================= */
+.header-login {
+    width: 100%;
+    height: 80px;
+    background: #fff;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 40px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.header-login img {
+    height: 40px;
+}
+
+/* =========================
+   MAIN LOGIN
+========================= */
+main {
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 18px;
+    padding: 20px;
+}
+
+/* TITULOS */
+main h1 {
+    font-size: 16pt;
+    font-weight: 700;
+    text-align: center;
+}
+
+main h2 {
+    font-size: 9pt;
+    font-weight: 500;
+    color: #777;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   FORMULARIO LOGIN
+========================= */
+.login-form {
+    width: 100%;
+    max-width: 420px;
+
+    background: #fff;
+    padding: 40px 45px;
+
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* LABELS */
+.login-form label {
+    font-size: 7.5pt;
+    font-weight: 700;
+}
+
+/* INPUTS */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    padding: 11px;
+    font-size: 9pt;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: var(--rojo-pantone);
+}
+
+/* BOTÓN LOGIN */
+.btn-login {
+    margin-top: 12px;
+    padding: 13px;
+
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    background: var(--rojo-pantone);
+    color: #fff;
+
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   FORMULARIO JUSTIFICATIVO
+========================= */
 .justificativo {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -31,7 +153,6 @@ body {
         "boton boton";
     gap: 25px;
 
-    /* Ocupar más pantalla */
     width: 95%;
     max-width: 1500px;
     margin: auto;
@@ -44,7 +165,6 @@ fieldset {
     padding: 20px;
 }
 
-/* Áreas */
 fieldset:nth-of-type(1) { grid-area: alumno; }
 fieldset:nth-of-type(2) { grid-area: academico; }
 fieldset:nth-of-type(3) { grid-area: motivo; }
@@ -52,43 +172,37 @@ fieldset:nth-of-type(4) { grid-area: certificado; }
 
 /* LEGEND */
 legend {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 9pt;
-    color: var(--texto);
     padding: 0 8px;
 }
 
-/* LABELS */
-label {
+/* LABELS FORM */
+.justificativo label {
     display: block;
     margin-top: 10px;
-    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 7pt;
-    color: var(--texto);
 }
 
-/* INPUTS */
-input,
-select {
+/* INPUTS FORM */
+.justificativo input,
+.justificativo select {
     width: 100%;
     padding: 8px;
     margin-top: 4px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: var(--texto);
 }
 
-/* BOTÓN */
-input[type="submit"] {
+/* BOTÓN FORM */
+.justificativo input[type="submit"] {
     grid-area: boton;
     justify-self: center;
 
     padding: 12px 50px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 700;
     font-size: 7pt;
+    font-weight: 700;
 
     background-color: var(--rojo-pantone);
     color: white;
@@ -97,100 +211,3 @@ input[type="submit"] {
     border-radius: 6px;
     cursor: pointer;
 }
-
-input[type="submit"]:hover {
-    opacity: 0.9;
-}
-
-
-/* Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* BODY */
-body {
-    min-height: 100vh;
-    background: var(--fondo);
-    font-family: 'Montserrat', sans-serif;
-    color: var(--texto);
-}
-
-/* HEADER */
-.header-login {
-    height: 80px;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    padding: 0 40px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.header-login img {
-    height: 40px;
-}
-
-/* MAIN centrado */
-main {
-    height: calc(100vh - 70px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* FORM LOGIN */
-.login-form {
-    background: #fff;
-    padding: 40px 35px;
-    width: 100%;
-    max-width: 360px;
-
-    border-radius: 8px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* INPUTS */
-.login-form input[type="text"],
-.login-form input[type="password"] {
-    padding: 10px;
-    font-size: 9pt;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: var(--texto);
-    font-family: 'Montserrat', sans-serif;
-}
-
-.login-form input:focus {
-    outline: none;
-    border-color: var(--rojo-pantone);
-}
-
-/* BOTÓN LOGIN*/
-.btn-login {
-    margin-top: 10px;
-    padding: 12px;
-    font-size: 8pt;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-align: center;
-    text-decoration: none;
-
-    background: var(--rojo-pantone);
-    color: #fff;
-
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-}
-
-.btn-login:hover {
-    opacity: 0.9;
-}
-

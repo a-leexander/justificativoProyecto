@@ -123,15 +123,12 @@ app.post('/auth', async (req, res)=>{
 //auth pages 
 app.get("/", (req, res)=>{
     if(req.session.loggedin){
-        res.render("index", {
+        res.render("home", {
             login: true,
-            name: req.session.name
+            
         });
     }else{
-        res.render("index", {
-            login: false,
-            name: "Debe iniciar sesión"
-        });
+        res.redirect("login")
     }
 });
 
@@ -206,5 +203,3 @@ app.use((err, req, res, next) => {
 app.listen(3000, function(){
     console.log("Servidor creado http://localhost:3000");
 });
-
-
