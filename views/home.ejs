@@ -13,18 +13,14 @@
                 <img src="/resources/img/logo.png" alt="Logo UCSC">
             </a>
         </div>
-    </header>
-    <h1>dashbord</h1>
-    
     <% if (login) { %>
         <a href="/logout" class="a-logout">cerrar sesion</a>
     <% } %>
-       
+    </header>
+    <h1>dashbord</h1>
     
-
-    
-    <button>
-        <a href="/formulario">crea formulario</a>
-    </button>
+    <% if (user.tipo === "A") { %>
+    <a href="/formulario">Crear formulario</a>
+    <% } %>
 </body>
 </html>

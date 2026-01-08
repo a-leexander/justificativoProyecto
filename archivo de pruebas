@@ -1,0 +1,12 @@
+// app.get("/formulario", (req, res) => {
+
+//     if (!req.session.loggedin || req.session.user.tipo !== "A") {
+//         return res.redirect("/login");
+//     }
+
+//     if (req.session.user.tipo !== "A") {
+//         return res.status(403).send("Acceso denegado");
+//     }
+
+//     res.render("formulario");
+// });

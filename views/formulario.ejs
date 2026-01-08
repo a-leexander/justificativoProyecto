@@ -20,15 +20,15 @@
         <legend>Datos del estudiante</legend>
 
         <label>Nombre estudiante:</label>
-        <input type="text" name="nom" id="nom" required>
+        <input type="text" name="nom" value="<%= alumno.nombre_completo %>" required disabled="true">
         <label>Rut:</label>
-        <input type="text" name="rut" id="rut" required>
+        <input type="text" name="rut" value="<%= alumno.rut %>" required>
         <label>Correo institucional:</label>
-        <input type="email" name="ema" id="ema" required>
+        <input type="email" name="ema" value="<%= alumno.correo %>" required>
         <label>Telefono:</label>
-        <input type="tel" name="tel" id="tel" required>
+        <input type="tel" name="tel" value="<%= alumno.telefono %>" required>
         <label>Carrera:</label>
-        <input type="text" name="car" id="car" required>
+        <input type="text" name="car" value="<%= alumno.ua_carrera %>" required>
         <label>Semestre:</label>
         <input type="text" name="sem" id="sem" required>
         <label>Jornada:</label>
@@ -58,7 +58,7 @@
     </fieldset>
     <fieldset>
         <legend>Adjuntar certificado (PDF):</legend>
-            <input type="file" name="certificado" accept="application/pdf" required>
+            <input type="file" name="certificado" accept="application/pdf">
     </fieldset>
     <input type="submit" value="Enviar">
     </form>

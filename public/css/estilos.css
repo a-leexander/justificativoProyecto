@@ -1,10 +1,11 @@
 /* Fuente Montserrat */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
 
 /* Colores */
 :root {
     --texto: #646567;           /* 75% negro */
     --rojo-pantone: #E03C31;    /* Pantone 1795 C */
+    --fondo: #f4f4f4;
 }
 
 /* Reset */
@@ -100,15 +101,7 @@ input[type="submit"] {
 input[type="submit"]:hover {
     opacity: 0.9;
 }
-/* Fuente Montserrat */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
 
-/* Colores */
-:root {
-    --texto: #646567;           /* 75% negro */
-    --rojo-pantone: #E03C31;    /* Pantone 1795 C */
-    --fondo: #f4f4f4;
-}
 
 /* Reset */
 * {
@@ -127,7 +120,7 @@ body {
 
 /* HEADER */
 .header-login {
-    height: 70px;
+    height: 80px;
     background: #fff;
     display: flex;
     align-items: center;
