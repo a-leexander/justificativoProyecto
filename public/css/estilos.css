@@ -211,3 +211,138 @@ legend {
     border-radius: 6px;
     cursor: pointer;
 }
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard {
+    min-height: calc(100vh - 80px);
+    padding: 40px;
+}
+
+/* BOTÓN FLOTANTE */
+.btn-flotante {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    background: var(--rojo-pantone);
+    color: #fff;
+
+    padding: 14px 26px;
+    border-radius: 50px;
+
+    font-size: 8pt;
+    font-weight: 700;
+    text-decoration: none;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.btn-flotante:hover {
+    opacity: 0.9;
+}
+
+        :root {
+            --gris: #646567;
+            --rojo: #D12421;
+            --negro-suave: #343a40;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* --- HEADER --- */
+                .header-container {
+    width: 100%;
+    background: #fff;
+
+    padding: 18px 40px;
+    margin-bottom: 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+        .header-container img { height: 50px; }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-card {
+            margin: 0 25px 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            background: white;
+        }
+
+        .card-header {
+            background-color: var(--rojo) !important;
+            padding: 15px 22px;
+            flex-shrink: 0;
+        }
+
+        .dashboard-title {
+            color: #ffffff !important;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .search-container { position: relative; display: flex; align-items: center; }
+        .search-icon { position: absolute; left: 12px; color: var(--gris); font-size: 0.9rem; z-index: 5; }
+        .search-input {
+            font-size: 0.85rem;
+            padding: 6px 15px 6px 35px !important;
+            border-radius: 6px;
+            border: none;
+            width: 220px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .search-input:focus { width: 300px; }
+
+        .mini-stat {
+            padding: 3px 8px; font-size: 0.6rem; min-width: 60px; text-align: center;
+            background: rgba(0,0,0,0.15); border-radius: 5px; color: white;
+        }
+        .mini-stat span { font-size: 0.85rem; display: block; font-weight: bold; }
+
+        /* --- TABLA --- */
+        .table-main {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            overflow: hidden;
+        }
+        .table-main thead { flex-shrink: 0; background-color: #212529; color: white; }
+        .table-main tbody { flex-grow: 1; overflow-y: scroll; display: block; width: 100%; }
+        .table-main tr { display: flex; width: 100%; }
+        .table-main th, .table-main td { padding: 15px 20px; font-size: 0.8rem; text-align: left; box-sizing: border-box; }
+        .table-main tbody td { color: var(--gris); border-bottom: 1px solid #eee; }
+        .table-main tbody tr:hover { background-color: #f8f9fa; cursor: pointer; }
+
+        .col-1 { width: 13%; } .col-2 { width: 18%; } .col-3 { width: 20%; }
+        .col-4 { width: 17%; } .col-5 { width: 12%; } .col-6 { width: 10%; } .col-7 { width: 10%; }
+
+        .badge { font-size: 0.7rem; padding: 6px 10px; width: 100px; font-weight: 700; display: inline-block; text-align: center; border-radius: 4px; }
+
+        /* --- MODAL --- */
+        .modal-content { border-radius: 12px; border: none; }
+        .modal-header { background-color: var(--rojo); color: white; border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .detail-group { margin-bottom: 22px; display: block; width: 100%; }
+        .detail-label { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .detail-value { font-size: 1rem; color: var(--negro-suave); font-weight: 600; margin: 0; display: block; word-break: break-all; }
+    

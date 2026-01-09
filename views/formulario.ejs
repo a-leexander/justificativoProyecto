@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/resources/css/estilos.css">
     <title>Formulario</title>
 </head>
+
 <body>
     <header class="header-login">
         <div class="logo">
@@ -20,23 +21,20 @@
         <legend>Datos del estudiante</legend>
 
         <label>Nombre estudiante:</label>
-        <input type="text" name="nom" value="<%= alumno.nombre_completo %>" disabled="true">
+        <input type="text" name="nom" value="<%= alumno.nombre_completo %>" readonly>
         <label>Rut:</label>
-        <input type="text" name="rut" value="<%= alumno.rut %>" required>
+        <input type="text" name="rut" value="<%= alumno.rut %>" readonly>
         <label>Correo institucional:</label>
-        <input type="email" name="ema" value="<%= alumno.correo %>" required>
+        <input type="email" name="ema" value="<%= alumno.correo %>" readonly>
         <label>Telefono:</label>
-        <input type="tel" name="tel" value="<%= alumno.telefono %>" required>
+        <input type="tel" name="tel" value="<%= alumno.telefono %>" readonly>
         <label>Carrera:</label>
-        <input type="text" name="car" value="<%= alumno.ua_carrera %>" required>
+        <input type="text" name="car" value="<%= alumno.nombre_carrera %>" readonly>
         <label>Semestre:</label>
-        <input type="text" name="sem" id="sem" required>
+        <input type="text" name="sem" value="<%= alumno.semestre %>" readonly>
         <label>Jornada:</label>
-        <select name="jornada">
-            <option value="">Seleccione</option>
-            <option value="diurna">Diurna</option>
-            <option value="vespertina">Vespertina</option>
-        </select>
+        <input type="text" name="jornada" value="<%= alumno.jornada %>" readonly>
+
 
     </fieldset>
     <fieldset>
@@ -45,11 +43,19 @@
         <label>Fecha de Evaluación a Justificar:</label>
         <input type="date" name="fecha_evaluacion" required>
         <label>Asignatura:</label>
-        <input type="text" name="asignatura" required>
+        <select name="id_asignatura" id="asignatura" required>
+            <option value="">Seleccione asignatura</option>
+            <% asignaturas.forEach(asig => { %>
+            <option value="<%= asig.id_asignatura %>" data-seccion="<%= asig.seccion %>" data-docente="<%= asig.docente %>">
+            <%= asig.nombre %>
+            </option>
+            <% }) %>
+        </select>
         <label>Sección:</label>
-        <input type="text" name="seccion" required>
+        <input type="text" name="seccion" id="seccion" readonly>
         <label>Docente:</label>
-        <input type="text" name="docente" required>
+        <input type="text" name="docente" id="docente" readonly>
+
     </fieldset>
     <fieldset>
     <legend>Motivo de la Justificación</legend>
@@ -63,4 +69,16 @@
     <input type="submit" value="Enviar">
     </form>
 </body>
+<script>
+    const selectAsignatura = document.getElementById("asignatura");
+    const inputSeccion = document.getElementById("seccion");
+    const inputDocente = document.getElementById("docente");
+
+    selectAsignatura.addEventListener("change", function () {
+        const option = this.options[this.selectedIndex];
+
+        inputSeccion.value = option.dataset.seccion || "";
+        inputDocente.value = option.dataset.docente || "";
+    });
+</script>
 </html>
