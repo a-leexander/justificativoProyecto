@@ -8,13 +8,15 @@
 </head>
 
 <body>
+    <div class="page-content form-page">
     <header class="header-login">
         <div class="logo">
-            <a href="/home">
+            <a href="/home">    
                 <img src="/resources/img/logo.png" alt="Logo UCSC">
             </a>
         </div>
     </header>
+    
 
     <form class="justificativo" action="/enviar-justificativo" method="post" enctype="multipart/form-data">
     <fieldset>
@@ -55,7 +57,6 @@
         <input type="text" name="seccion" id="seccion" readonly>
         <label>Docente:</label>
         <input type="text" name="docente" id="docente" readonly>
-
     </fieldset>
     <fieldset>
     <legend>Motivo de la Justificación</legend>
@@ -63,11 +64,23 @@
             <input type="text" name="motivo" required>
     </fieldset>
     <fieldset>
-        <legend>Adjuntar certificado (PDF):</legend>
-            <input type="file" name="certificado" accept="application/pdf">
-    </fieldset>
+    <legend>Certificado</legend>
+
+    <label>Tipo de certificado:</label>
+    <select name="tipo_certificado" required>
+        <option value="">Seleccione tipo</option>
+        <option value="MEDICO">Médico</option>
+        <option value="LABORAL">Laboral</option>
+        <option value="OTRO">Otro</option>
+    </select>
+
+    <label>Adjuntar certificado (PDF):</label>
+    <input type="file" name="certificado" accept="application/pdf" required>
+</fieldset>
+
     <input type="submit" value="Enviar">
     </form>
+    </div>
 </body>
 <script>
     const selectAsignatura = document.getElementById("asignatura");

@@ -19,12 +19,26 @@
         <div class="card-header d-flex justify-content-between align-items-cente    r">
             <h6 class="dashboard-title">Justificativos</h6>
             <div class="d-flex align-items-center gap-3">
-                <div class="d-flex gap-2">
-                    <div class="mini-stat bg-dark"><small>TOTAL</small><span><%= stats.total %></span></div>
-                    <div class="mini-stat bg-success"><small>OK</small><span><%= stats.aprobados %></span></div>
-                    <div class="mini-stat bg-warning text-dark"><small>PND</small><span><%= stats.pendientes %></span></div>
-                    <div class="mini-stat bg-danger"><small>RECH</small><span><%= stats.rechazados %></span></div>
-                </div>
+                <% if (stats) { %>
+<div class="d-flex gap-2">
+    <div class="mini-stat bg-dark">
+        <small>TOTAL</small>
+        <span><%= stats.total %></span>
+    </div>
+    <div class="mini-stat bg-success">
+        <small>OK</small>
+        <span><%= stats.aprobados %></span>
+    </div>
+    <div class="mini-stat bg-warning text-dark">
+        <small>PND</small>
+        <span><%= stats.pendientes %></span>
+    </div>
+    <div class="mini-stat bg-danger">
+        <small>RECH</small>
+        <span><%= stats.rechazados %></span>
+    </div>
+</div>
+<% } %>
                 <div class="search-container">
                     <i class="bi bi-search search-icon"></i>
                     <input type="text" id="searchBox" class="search-input" placeholder="Buscar...">
@@ -47,59 +61,32 @@
             <tbody>
                 <% if (datos && datos.length > 0) { 
                     datos.forEach(function(item) { %>
-                    <tr onclick="showDetails('<%= item.rut %>', '<%= item.nombre_completo %>', '<%= item.correo %>', '<%= item.carrera %>', '<%= item.asignatura %>', '<%= item.fecha_prueba %>')">
-                        <td class="col-1"><strong><%= item.rut %></strong></td>
-                        <td class="col-2"><%= item.nombre_completo %></td>
-                        <td class="col-3"><%= item.correo %></td>
-                        <td class="col-4"><%= item.carrera %></td>
-                        <td class="col-5"><%= item.asignatura %></td>
-                        <td class="col-6"><%= item.fecha_prueba ? new Date(item.fecha_prueba).toLocaleDateString('es-CL') : 'N/A' %></td>
-                        <td class="col-7">
-                            <span class="badge <%= item.estado === 'Aprobado' ? 'bg-success' : (item.estado === 'Rechazado' ? 'bg-danger' : 'bg-warning text-dark') %>">
-                                <%= item.estado %>
-                            </span>
-                        </td>
-                    </tr>
+
+    <tr style="cursor:pointer"
+    onclick="window.location.href='/justificativo/<%= item.id_inasistencia %>'">
+
+    <td class="col-1"><strong><%= item.rut %></strong></td>
+    <td class="col-2"><%= item.nombre_completo %></td>
+    <td class="col-3"><%= item.correo %></td>
+    <td class="col-4"><%= item.carrera %></td>
+    <td class="col-5"><%= item.asignatura %></td>
+    <td class="col-6">
+        <%= item.fecha_prueba ? new Date(item.fecha_prueba).toLocaleDateString('es-CL') : 'N/A' %>
+    </td>
+    <td class="col-7">
+        <span class="badge 
+        <%= item.estado === 3 ? 'bg-success' : (item.estado === 2 ? 'bg-danger' : 'bg-warning text-dark') %>">
+        <%= item.estado === 3 ? 'Aprobado' : (item.estado === 2 ? 'Rechazado' : 'Pendiente') %>
+        </span>
+    </td>
+</tr>
+
                 <% }); } %>
             </tbody>
         </table>
     </div>
 
-    <div class="modal fade" id="detailsModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Detalles del Alumno</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="detail-group">
-                        <span class="detail-label">Nombre Completo</span>
-                        <p id="modal-nombre" class="detail-value"></p>
-                    </div>
-                    <div class="detail-group">
-                        <span class="detail-label">RUT</span>
-                        <p id="modal-rut" class="detail-value"></p>
-                    </div>
-                    <div class="detail-group">
-                        <span class="detail-label">Fecha de Evaluación</span>
-                        <p id="modal-fecha" class="detail-value"></p>
-                    </div>
-                    <div class="detail-group">
-                        <span class="detail-label">Correo Institucional</span>
-                        <p id="modal-correo" class="detail-value"></p>
-                    </div>
-                    <div class="detail-group">
-                        <span class="detail-label">Asignatura</span>
-                        <p id="modal-asignatura" class="detail-value"></p>
-                    </div>
-                </div>
-                <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-danger w-100 py-2 fw-bold" style="background:var(--rojo); border:none;">GESTIONAR SOLICITUD</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -112,21 +99,14 @@
             });
         };
 
-        const modalObj = new bootstrap.Modal('#detailsModal');
-        function showDetails(rut, nombre, correo, carrera, asig, fecha) {
-            document.getElementById('modal-rut').innerText = rut;
-            document.getElementById('modal-nombre').innerText = nombre;
-            document.getElementById('modal-correo').innerText = correo;
-            document.getElementById('modal-asignatura').innerText = asig;
-            const f = new Date(fecha);
-            document.getElementById('modal-fecha').innerText = (fecha && fecha !== 'null') ? f.toLocaleDateString('es-CL') : 'N/A';
-            modalObj.show();
-        }
+        
     </script>
-    <% if (user && user.tipo === "A") { %>
+    <% if (user.tipo === "A") { %>
     <a href="/formulario" class="btn-flotante">
-        Crear formulario
+        Crear justificativo
     </a>
 <% } %>
+   
+
 </body>
 </html>

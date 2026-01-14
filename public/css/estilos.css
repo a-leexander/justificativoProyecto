@@ -273,7 +273,7 @@ legend {
 
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
-        .header-container img { height: 50px; }
+.header-container img { height: 50px; }
 
         /* --- CONTENEDOR PRINCIPAL --- */
         .main-card {
@@ -346,3 +346,97 @@ legend {
         .detail-label { font-size: 0.75rem; font-weight: 700; color: #999; text-transform: uppercase; display: block; margin-bottom: 5px; }
         .detail-value { font-size: 1rem; color: var(--negro-suave); font-weight: 600; margin: 0; display: block; word-break: break-all; }
     
+.justificativo input[readonly],
+.justificativo textarea[readonly] {
+    background-color: #f5f5f5;
+    color: #555;
+    cursor: default;
+}
+.justificativo textarea {
+    width: 100%;
+    min-height: 90px;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 8pt;
+}
+.btn-certificado {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 18px;
+
+    background: #343a40;
+    color: #fff;
+
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-decoration: none;
+
+    border-radius: 5px;
+}
+
+.btn-certificado:hover {
+    opacity: 0.9;
+}
+.acciones {
+    grid-area: boton;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.acciones button {
+    padding: 12px 40px;
+    font-size: 7.5pt;
+    font-weight: 700;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.4px;
+}
+
+/* Aprobar */
+.acciones button:first-child {
+    background-color: #198754;
+    color: white;
+}
+
+/* Rechazar */
+.acciones button:last-child {
+    background-color: #dc3545;
+    color: white;
+}
+
+.acciones button:hover {
+    opacity: 0.9;
+}
+.estado-justificativo {
+    text-align: center;
+    font-weight: 700;
+    font-size: 8pt;
+    padding: 8px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.estado-aprobado { background: #d1e7dd; color: #0f5132; }
+.estado-rechazado { background: #f8d7da; color: #842029; }
+.estado-pendiente { background: #fff3cd; color: #664d03; }
+
+/* =========================
+   SCROLL Y ESPACIADO FORMULARIO / DETALLE
+========================= */
+.page-content {
+    min-height: calc(100vh - 80px); /* Altura disponible menos header */
+    overflow-y: auto;               /* Permite scroll solo aquí */
+    padding-bottom: 50px;           /* Para que botones no queden ocultos */
+}
+
+/* Opcional: margen interno extra para acciones */
+.form-page .justificativo,
+.detail-page .justificativo {
+    padding-bottom: 80px; /* evita que botones queden atrás */
+}

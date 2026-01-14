@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VistaFormulario</title>
+    <link rel="stylesheet" href="/resources/css/estilos.css">
+</head>
+<body>
+    <div class="page-content detail-page">
+    <header class="header-login">
+        <div class="logo">
+            <a href="/home">    
+                <img src="/resources/img/logo.png" alt="Logo UCSC">
+            </a>
+        </div>
+    </header>
+    <%
+    const formatoFechaHora = (fecha) => {
+        if (!fecha) return null;
+        return new Date(fecha).toLocaleString('es-CL', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    let claseEstado = "estado-pendiente";
+    let textoEstado = "Pendiente";
+
+    if (justificativo.estado === 3) {
+        claseEstado = "estado-aprobado";
+        textoEstado = "Aprobado";
+    } else if (justificativo.estado === 2) {
+        claseEstado = "estado-rechazado";
+        textoEstado = "Rechazado";
+    }
+%>
+
+<div class="bloque-estado">
+    <div class="estado-justificativo <%= claseEstado %>">
+        <strong>Estado:</strong> <%= textoEstado %>
+    </div>
+
+    <div class="info-fechas">
+    <p>
+        <strong>Enviado:</strong>
+        <%= formatoFechaHora(justificativo.fecha_emision) %>
+    </p>
+
+    <% if (justificativo.fecha_respuesta) { %>
+        <p>
+            <strong>Respondido:</strong>
+            <%= formatoFechaHora(justificativo.fecha_respuesta) %>
+        </p>
+    <% } else { %>
+        <p><em>Pendiente de revisión</em></p>
+    <% } %>
+</div>
+
+</div>
+
+
+<div class="info-admin">
+    <p><strong>ID:</strong> #<%= justificativo.id_inasistencia %></p>
+    <p><strong>Tipo de certificado:</strong> <%= justificativo.tipo %></p>
+
+
+        <% if (justificativo.nombre_asistente) { %>
+    <p><strong>Asistente:</strong> <%= justificativo.nombre_asistente %></p>
+<% } %>
+
+</div>
+
+
+
+
+    <form class="justificativo">
+    <fieldset>
+        <legend>Datos del estudiante</legend>
+
+        <label>Nombre estudiante:</label>
+        <input type="text" name="nom" value="<%= justificativo.nombre_completo %>" readonly>
+        <label>Rut:</label>
+        <input type="text" name="rut" value="<%= justificativo.rut %>" readonly>
+        <label>Correo institucional:</label>
+        <input type="email" name="ema" value="<%= justificativo.correo %>" readonly>
+        <label>Telefono:</label>
+        <input type="tel" name="tel" value="<%= justificativo.telefono %>" readonly>
+        <label>Carrera:</label>
+        <input type="text" name="car" value="<%= justificativo.carrera %>" readonly>
+        <label>Semestre:</label>
+        <input type="text" name="sem" value="<%= justificativo.semestre %>" readonly>
+        <label>Jornada:</label>
+        <input type="text" name="jornada" value="<%= justificativo.jornada %>" readonly>
+    </fieldset>
+    <fieldset>
+        <legend>Datos Académicos</legend>
+
+        <label>Fecha de Evaluación a Justificar:</label>
+        <input type="date"
+value="<%= new Date(justificativo.fecha_prueba).toISOString().split('T')[0] %>"
+readonly>
+
+        <label>Asignatura:</label>
+        <input type="text" value="<%= justificativo.asignatura %>" readonly>
+        <label>Sección:</label>
+        <input type="text" value="<%= justificativo.seccion %>" readonly>
+        <label>Docente:</label>
+        <input type="text" value="<%= justificativo.docente %>" readonly>
+    </fieldset>
+    <fieldset>
+    <legend>Motivo de la Justificación</legend>
+        <label>Motivo:</label>
+            <input type="text" value="<%= justificativo.motivo %>" readonly>
+    </fieldset>
+    <fieldset>
+    <legend>Certificado <%= justificativo.tipo %></legend>
+    <a href="/ver-archivo/<%= justificativo.ruta_archivo %>" target="_blank" class="btn-certificado">Ver certificado PDF</a>
+    </fieldset>
+    <fieldset>
+    <legend>Observaciones</legend>
+
+    <% if (user.tipo === "AA" && justificativo.estado === 1) { %>
+        <!-- Editable SOLO si está pendiente -->
+        <textarea id="observaciones"><%= justificativo.observaciones || "" %></textarea>
+    <% } else { %>
+        <!-- Bloqueado cuando ya fue respondido -->
+        <textarea readonly>
+<%= justificativo.observaciones || "Sin observaciones" %>
+        </textarea>
+    <% } %>
+
+</fieldset>
+
+    <% if (user.tipo === "AA" && justificativo.estado === 1) { %>
+    <div class="acciones">
+        <button type="button" class="btn-aprobar" onclick="cambiarEstado(3)">
+    Aprobar
+</button>
+
+<button type="button" class="btn-rechazar" onclick="cambiarEstado(2)">
+    Rechazar
+</button>
+
+    </div>
+<% } %>
+
+    </form>
+    </div>
+</body>
+<script>
+function cambiarEstado(estado) {
+
+    let mensaje = estado === 3
+        ? "¿Estás seguro de APROBAR este justificativo?\n\nEsta acción no se puede deshacer."
+        : "¿Estás seguro de RECHAZAR este justificativo?\n\nEsta acción no se puede deshacer.";
+
+    if (!confirm(mensaje)) return;
+
+    const observaciones = document.getElementById("observaciones")?.value.trim();
+
+    if (estado == 2 && (!observaciones || observaciones === "")) {
+        alert("Debe ingresar observaciones para rechazar el justificativo.");
+        return;
+    }
+
+    fetch('/actualizar-estado', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id: <%= justificativo.id_inasistencia %>,
+            estado,
+            observaciones
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (!data.success) {
+            alert(data.message || "Error");
+            return;
+        }
+        window.location.reload();
+    });
+}
+</script>
+
+
+
+</html>

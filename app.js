@@ -25,13 +25,13 @@
         resave: true,
         saveUninitialized:true
     }));
+    app.use("/ver-archivo", express.static("uploads"));
 
     //conexion a base de datos
     const conexion = require("./database/db")
     // multer para los archivos pdf
     const multer = require("multer");
     const path = require("path");
-    const { error } = require("console");
 
 
 
@@ -40,14 +40,16 @@
     app.get("/login", (req, res)=>{
         res.render("login");
     });
-    app.get("/home", (req, res) => {
+app.get("/home", (req, res) => {
+    if (!req.session.loggedin) return res.redirect("/login");
 
-        if (!req.session.loggedin) {
-            return res.redirect("/login");
-        }
+    const { tipo, rut } = req.session.user;
 
-        const sqlDatos = `SELECT 
+    let sqlDatos = `
+    SELECT 
     j.id_inasistencia,
+    j.motivo,
+    j.ruta_archivo,
     a.rut,
     a.nombre_completo,
     a.correo,
@@ -55,36 +57,71 @@
     asig.nombre AS asignatura,
     j.fecha_prueba,
     j.estado
-FROM Justificativo j
-JOIN Alumno a ON j.rut_alumno = a.rut
-JOIN Carrera c ON a.ua_carrera = c.ua
-JOIN Asignatura asig ON j.id_asignatura = asig.id_asignatura
-ORDER BY j.estado ASC, j.fecha_prueba ASC;
-`;
 
-        const sqlStats = `SELECT 
-    COUNT(*) total,
-    SUM(estado = 3) aprobados,
-    SUM(estado = 1) pendientes,
-    SUM(estado = 2) rechazados
-FROM Justificativo;`;
+    FROM Justificativo j
+    JOIN Alumno a ON j.rut_alumno = a.rut
+    JOIN Carrera c ON a.ua_carrera = c.ua
+    JOIN Asignatura asig ON j.id_asignatura = asig.id_asignatura
+    `;
 
-        conexion.query(sqlDatos, (err, datos) => {
-            if (err) return res.send("Error al cargar dashboard");
+    let where = "";
+    let params = [];
 
-            conexion.query(sqlStats, (err, stats) => {
-                if (err) return res.send("Error estadísticas");
+    if (tipo === "A") {
+        where = "WHERE a.rut = ?";
+        params = [rut];
+    }
 
-                res.render("home", {
-                    login: true,
-                    user: req.session.user,
-                    datos,
-                    stats: stats[0]
-                });
-            });
+    if (tipo === "JC") {
+        where = "WHERE c.rut_jefe = ?";
+        params = [rut];
+    }
+
+    sqlDatos += ` ${where} ORDER BY j.fecha_prueba DESC`;
+
+    conexion.query(sqlDatos, params, (err, datos) => {
+        if (err) return res.send("Error dashboard");
+
+        res.render("home", {
+            datos,
+            user: req.session.user,
+            stats: null
         });
     });
+});
 
+
+app.post("/actualizar-estado", (req, res) => {
+
+    if (!req.session.loggedin || req.session.user.tipo !== "AA") {
+        return res.status(403).send("No autorizado");
+    }
+
+    const { id, estado, observaciones } = req.body;
+    const rut_asistente = req.session.user.rut;
+
+    if (estado == 2 && (!observaciones || observaciones.trim() === "")) {
+        return res.status(400).json({
+            success: false,
+            message: "Las observaciones son obligatorias al rechazar."
+        });
+    }
+
+    const sql = `
+        UPDATE Justificativo
+        SET 
+            estado = ?,
+            observaciones = ?,
+            rut_asistente = ?,
+            fecha_respuesta = NOW()
+        WHERE id_inasistencia = ?
+    `;
+
+    conexion.query(sql, [estado, observaciones, rut_asistente, id], (err) => {
+        if (err) return res.status(500).send("Error al actualizar");
+        res.json({ success: true });
+    });
+});
 
 
 
@@ -108,7 +145,7 @@ FROM Justificativo;`;
 
             const alumno = results[0];
 
-            const sqlAsignaturas = `SELECT a.id_asignatura, a.nombre, a.seccion, d.nombre AS docente
+            const sqlAsignaturas = `SELECT a.id_asignatura, a.nombre, a.seccion, d.nombre AS docente, a.rut_docente, a.ua_carrera
                                     FROM Asignatura a INNER JOIN Docente d ON a.rut_docente = d.rut WHERE a.ua_carrera = ?`;
 
 
@@ -125,6 +162,65 @@ FROM Justificativo;`;
             });
         });
     });
+
+    app.get("/justificativo/:id", (req, res) => {
+    const id = req.params.id;
+
+    const sql = `SELECT 
+    j.id_inasistencia,
+    j.motivo,
+    j.tipo,
+    j.estado,
+    j.observaciones,
+    j.fecha_emision,
+    j.fecha_respuesta,
+    j.rut_asistente,
+    j.fecha_prueba,
+    j.ruta_archivo,
+
+    
+    ast.nombre AS nombre_asistente,
+
+
+    a.nombre_completo,
+    a.rut,
+    a.correo,
+    a.telefono,
+
+    c.nombre AS carrera,
+    c.semestre,
+    c.jornada,
+
+    asig.nombre AS asignatura,
+    asig.seccion,
+
+    d.nombre AS docente
+
+FROM Justificativo j
+JOIN Alumno a ON j.rut_alumno = a.rut
+JOIN Carrera c ON a.ua_carrera = c.ua
+JOIN Asignatura asig ON j.id_asignatura = asig.id_asignatura
+JOIN Docente d ON asig.rut_docente = d.rut
+LEFT JOIN Asistente ast ON j.rut_asistente = ast.rut
+
+
+
+
+WHERE j.id_inasistencia = ?
+`;
+
+    conexion.query(sql, [id], (err, result) => {
+        if (err || result.length === 0) {
+            return res.send("Justificativo no encontrado");
+        }
+
+        res.render("detalleJustificativo", {
+            justificativo: result[0],
+            user: req.session.user
+        });
+    });
+});
+
 
 
 
@@ -221,21 +317,22 @@ FROM Justificativo;`;
         if (!req.file) {
         return res.send("Debe adjuntar un certificado PDF");
         }
-        const {fecha_evaluacion, id_asignatura, motivo} = req.body;
+        const {fecha_evaluacion, id_asignatura, motivo, tipo_certificado} = req.body;
 
         const rut_alumno = req.session.user.rut;
         const estado = 1; // Pendiente
         const fecha_emision = new Date();
-        const ruta_archivo = req.file.path;
+        const ruta_archivo = req.file.filename;
 
-        const sqlInsert = `INSERT INTO Justificativo(motivo, estado, fecha_emision, fecha_prueba, ruta_archivo,
-                            rut_alumno,id_asignatura)    VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        conexion.query(sqlInsert,[motivo, estado, fecha_emision,fecha_evaluacion, ruta_archivo, rut_alumno, id_asignatura],
+        const sqlInsert = `INSERT INTO Justificativo(motivo, tipo, estado, fecha_emision, fecha_prueba, ruta_archivo,
+                            rut_alumno,id_asignatura)    VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+        conexion.query(sqlInsert,[motivo, tipo_certificado, estado, fecha_emision,fecha_evaluacion, ruta_archivo, rut_alumno, id_asignatura],
         (error) => {
             if (error) {
                 console.log(error);
                 return res.send("Error al guardar justificativo");
             }
+            console.log(req.body);
 
             res.redirect("/home");
         });
